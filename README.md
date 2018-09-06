@@ -15,7 +15,7 @@ The Fastly to Insights image is configured by environment variables. These are m
 * `INSERT_KEY`
 * `SERVICES`
 
-`SERVICES` needs to be a string with the ids of the Fastly services you want to see data for in Insights, separated by a space. I know that's not ideal. A limitation of Fastly is that you have to query one service at a time, so I chose to create an array of service ids and loop through them to query Fastly. A limitation of Docker is that you can't pass an array via the command line, so I chose to split a string on ` `. If you have a better idea, I would love to hear it - please contribute!
+`SERVICES` needs to be a string with the ids of the Fastly services you want to see data for in Insights, separated by a space. I know that's not ideal. A limitation of Fastly is that you have to query one service at a time, so I chose to create an array of service ids and loop through them to query Fastly. A limitation of Docker is that you can't pass an array via the command line, so I chose to split a string on "` `". If you have a better idea, I would love to hear it - please contribute!
 
 ### Example
 
