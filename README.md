@@ -2,7 +2,7 @@
 
 This is the New Relic blessed way to get your Fastly metrics into Insights, packaged as a Docker container image for ease of use!
 
-In order to use the Fastly to Insights Docker image, you will need an active New Relic account with Insights, an active Fastly account with Read access, a New Relic Insights Insert key and a Fastly API Key.
+In order to use the Fastly to Insights Docker image, you will need an active New Relic account with Insights, an active Fastly account with Read access, a New Relic Insights Insert key and a Fastly API Key. The Docker image can be found [here](https://cloud.docker.com/swarm/newrelic/repository/docker/newrelic/fastly-to-insights/general).
 
 ## How to use this image
 
