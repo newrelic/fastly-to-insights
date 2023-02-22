@@ -2,7 +2,7 @@
 
 FROM alpine
 
-RUN apk add --update nodejs nodejs-npm
+RUN apk add --update nodejs npm
 
 WORKDIR /usr/src/app
 
@@ -12,4 +12,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["node", "app.js"]
+CMD ["node", "index.js"]

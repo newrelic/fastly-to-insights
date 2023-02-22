@@ -1,18 +1,20 @@
 {
-  "name": "boba",
-  "version": "1.0.0",
-  "description": "This pipes Fastly metrics into New Relic Insights",
-  "main": "app.js",
+  "name": "fastly-to-insights",
+  "version": "2.0.0",
+  "description": "Import Fastly data to New Relic Insights",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@source.datanerd.us:research/fastly-api-poc.git"
+    "url": "git@github.com:newrelic/fastly-to-insights.git"
   },
   "author": "Rebecca Holzschuh",
   "license": "Apache-2.0",
   "dependencies": {
-    "request": "^2.88.0"
+    "fastly": "^3.1.0",
+    "node-fetch": "^3.3.0"
   }
 }
