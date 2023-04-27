@@ -46,6 +46,10 @@ You are welcome to send pull requests to us - however, by doing so you agree tha
 
 A Makefile is provided which you can use to build and run the fastly to insights integration locally -- `make run` will build and then run the image. You can provide configuration via a `.env` file (`.env.example` provided as an example).
 
+## Releasing
+
+To release a new image, make sure you've created a tag for your release, check it out and then run `make release tag=<your-tag>`. This will build the Docker image and push it to DockerHub.
+
 ## More Information
 
 For more information on the Fastly Real-Time Analytics API, look [here](https://docs.fastly.com/api/analytics).
