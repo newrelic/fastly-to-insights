@@ -1,6 +1,6 @@
 {
   "name": "fastly-to-insights",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Import Fastly data to New Relic Insights",
   "main": "index.js",
   "type": "module",
@@ -14,7 +14,7 @@
   "author": "Rebecca Holzschuh",
   "license": "Apache-2.0",
   "dependencies": {
-    "fastly": "^3.1.0",
+    "fastly": "^10.0.0",
     "node-fetch": "^3.3.0"
   }
 }
