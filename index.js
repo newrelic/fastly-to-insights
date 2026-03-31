@@ -49,7 +49,7 @@ async function pollFromFastly(service) {
     } else {
       timestamp = valuableData.Timestamp
       valuableData.Data.map((data) => {
-        batchAndSend(data.aggregated, { id: service, name: serviceDetail.name });
+        batchAndSend(data.datacenter, { id: service, name: serviceDetail.name });
       })
     }
 
@@ -59,16 +59,21 @@ async function pollFromFastly(service) {
 }
 
 async function batchAndSend(aggregate, service) {
-  let message = {
-    "eventType": EVENT_TYPE,
-    "service_id": service.id,
-    "service_name": service.name,
-    ...aggregate,
+  const events = []
+  for (const [datacenter, metrics] of Object.entries(aggregate)) {
+    events.push({
+      "eventType": EVENT_TYPE,
+      "service_id": service.id,
+      "service_name": service.name,
+      datacenter,
+      ...metrics,
+    });
   }
-  await sendToInsights(message)
+
+  await sendToInsights(events)
 }
 
-async function sendToInsights(logMessages) {
+async function sendToInsights(events) {
   let insights_url = `https://${INSIGHTS_HOST}/v1/accounts/${ACCOUNT_ID}/events`;
   try {
     fetch(insights_url, {
@@ -77,7 +82,7 @@ async function sendToInsights(logMessages) {
         'Content-Type': 'application/json',
         "X-Insert-Key": INSERT_KEY
       },
-      body: JSON.stringify(logMessages)
+      body: JSON.stringify(events)
     });
   } catch (error) {
     console.log('error posting to insights', error);
