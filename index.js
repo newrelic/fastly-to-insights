@@ -71,7 +71,9 @@ async function batchAndSend(aggregate, service) {
     });
   }
 
-  await sendToInsights(events)
+  if (events.length > 0) {
+    await sendToInsights(events);
+  }
 }
 
 async function sendToInsights(events) {
