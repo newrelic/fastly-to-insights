@@ -1,6 +1,7 @@
 // Copyright 2018 New Relic, Inc.  Licensed under the Apache License, version 2.0 (the "License"); you may not use this file except in compliance with the License.  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
 //Copyright 2018 New Relic Inc. All rights reserved.
 
+import { gzipSync } from 'node:zlib';
 import fetch from 'node-fetch';
 import { ApiClient, RealtimeApi, ServiceApi } from "fastly";
 
@@ -49,7 +50,7 @@ async function pollFromFastly(service) {
     } else {
       timestamp = valuableData.Timestamp
       valuableData.Data.map((data) => {
-        batchAndSend(data.aggregated, { id: service, name: serviceDetail.name });
+        batchAndSend(data.datacenter, { id: service, name: serviceDetail.name });
       })
     }
 
@@ -59,25 +60,34 @@ async function pollFromFastly(service) {
 }
 
 async function batchAndSend(aggregate, service) {
-  let message = {
-    "eventType": EVENT_TYPE,
-    "service_id": service.id,
-    "service_name": service.name,
-    ...aggregate,
+  const events = []
+  for (const [datacenter, metrics] of Object.entries(aggregate)) {
+    events.push({
+      "eventType": EVENT_TYPE,
+      "service_id": service.id,
+      "service_name": service.name,
+      datacenter,
+      ...metrics,
+    });
   }
-  await sendToInsights(message)
+
+  if (events.length > 0) {
+    await sendToInsights(events);
+  }
 }
 
-async function sendToInsights(logMessages) {
+async function sendToInsights(events) {
   let insights_url = `https://${INSIGHTS_HOST}/v1/accounts/${ACCOUNT_ID}/events`;
   try {
+    const body = gzipSync(JSON.stringify(events));
     fetch(insights_url, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
+        'Content-Encoding': 'gzip',
         "X-Insert-Key": INSERT_KEY
       },
-      body: JSON.stringify(logMessages)
+      body
     });
   } catch (error) {
     console.log('error posting to insights', error);
