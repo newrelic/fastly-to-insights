@@ -57,3 +57,38 @@ For more information on the Fastly Real-Time Analytics API, look [here](https://
 For more information on the New Relic Insights API, look [here](https://docs.newrelic.com/docs/insights/insights-data-sources/custom-data/insert-custom-events-insights-api). 
 
 This project is provided AS-IS WITHOUT WARRANTY OR SUPPORT, although you can report issues and contribute to the project.
+
+## Releasing
+
+Releasing a new version is a three-step process that synchronizes the source code, the container registry, and the public documentation.
+
+### 1. Tag the Code (Git)
+Create a permanent bookmark for the specific version in the repository history.
+
+* **Command:** `git tag <tag>` followed by `git push origin <tag>`
+* **Example:**
+    ```bash
+    git tag 2.5.0
+    git push origin 2.5.0
+    ```
+
+### 2. Build and Push the Image (Docker Hub)
+Run the `Makefile` command to build a multi-architecture image (supporting both `amd64` and `arm64`) and push it to the [New Relic Docker Hub](https://hub.docker.com/r/newrelic/fastly-to-insights).
+
+> **Note:** You must be logged into Docker Hub with an account that has write permissions to the `newrelic` organization.
+
+* **Command:** `make release tag=<tag>`
+* **Example:**
+    ```bash
+    make release tag=2.5.0
+    ```
+
+### 3. Document the Release (GitHub UI)
+While the Docker push handles the "machine" side, you must manually create the "human" announcement on GitHub to update the "Latest" release badge.
+
+1.  Navigate to the [Releases page](https://github.com/newrelic/fastly-to-insights/releases).
+2.  Click **Draft a new release**.
+3.  Click **Choose a tag** and select the tag you just pushed (e.g., `2.5.0`).
+4.  Title the release with the version number (e.g., `2.5.0`).
+5.  Provide a concise summary of changes, such as security patches, bug fixes, or new features.
+6.  Click **Publish release**.
