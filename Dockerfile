@@ -2,7 +2,14 @@
 
 FROM alpine:3.23.4
 
-RUN apk add --update nodejs npm
+# Force-upgrade OS packages carried over from the base layer (libssl3,
+# libcrypto3, c-ares, etc.), not just the ones added below -- `apk add`
+# alone won't upgrade an already-installed package if its current version
+# still satisfies nodejs/npm's dependency constraints.
+RUN apk update && \
+    apk upgrade --no-cache && \
+    apk add --no-cache nodejs npm && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /usr/src/app
 
