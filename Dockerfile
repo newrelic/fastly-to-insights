@@ -2,13 +2,6 @@
 
 FROM node:24-trixie-slim
 
-# Force-upgrade OS packages carried over from the base layer so a rebuild
-# picks up Debian security patches that landed after the base image was
-# published.
-RUN apt-get update && \
-    apt-get upgrade -y --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
-
 WORKDIR /usr/src/app
 
 COPY package*.json ./
